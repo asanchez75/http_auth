@@ -4,11 +4,11 @@ This module allows you to set up HTTP authentication on your site.
 You can easily set username and password for HTTP Authentication.
 No server site configuration needed.
 
-This module helps:
-
-* Restricting crawler to crawl on your site while development.
-* Restrict admin pages after being your site Live.
-* Easy to activate or deactivate HTTP Auth without deactivating module.
+Features
+--------
+  * Restricting crawler to crawl on your site while development.
+  * Restrict admin pages after being your site Live.
+  * Easy to activate or deactivate HTTP Auth without deactivating module.
 
 INSTALLATION INSTRUCTIONS
 -------------------------
