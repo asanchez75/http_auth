@@ -1,0 +1,5 @@
+name = HTTP Auth
+description = This module allows you to set up HTTP authentication on your site. You can easily set username and password for HTTP Authentication. No server site configuration needed."
+core = 7.x
+package = HTTP Auth
+configure = admin/config/development/http-auth
