@@ -2,14 +2,15 @@
 
 /**
  * @file
- * Enables Drupal to add HTTP Auth from the frontend on all over the site or on admin pages.
+ * Enables Drupal to add HTTP Auth from frontend on all over the site/pages.
  */
-
 
 /**
  * Implements hook_menu().
  */
 function http_auth_menu() {
+  
+  $items = array();
 
   $items['admin/config/development/http-auth'] = array(
     'title'            => 'Http Auth settings',
@@ -30,7 +31,7 @@ function http_auth_permission() {
   $permissions['administer http auth module'] = array(
     'title'           => t('HTTP Auth'),
     'restrict access' => TRUE,
-    'description'     => t('Users who have this permission can change the HTTP Auth settings.')
+    'description'     => t('Users who have this permission can change the HTTP Auth settings.'),
   );
 
   return $permissions;
@@ -58,9 +59,10 @@ function http_auth_settings_form($form, &$form_state) {
     '#maxlength' => 64,
     '#required' => TRUE,
     '#attributes' => array(
-      'placeholder' => 'username'
+      'placeholder' => 'username',
     ),
   );
+
   $form['http_auth']['password'] = array(
     '#type' => 'password',
     '#title' => t('HTTP Auth password'),
@@ -70,32 +72,37 @@ function http_auth_settings_form($form, &$form_state) {
     '#maxlength' => 64,
     '#required' => TRUE,
     '#attributes' => array(
-      'placeholder' => 'password'
+      'placeholder' => 'password',
     ),
   );
+
   $form['http_auth']['message'] = array(
     '#type' => 'textarea',
     '#title' => t('HTTP Auth Message'),
     '#description' => t('Add HTTP Auth message which would be shown to the unauthenticated users.'),
     '#default_value' => isset($http_auth_section['message']) ? $http_auth_section['message'] : '',
     '#attributes' => array(
-      'placeholder' => t('This page is Restricted. Please contact the administrator for access.')
+      'placeholder' => t('This page is Restricted. Please contact the administrator for access.'),
     ),
   );
+
   $form['http_auth']['applicable'] = array(
     '#type' => 'radios',
     '#title' => t('Applicable on:'),
     '#default_value' => isset($http_auth_section['applicable']) ? $http_auth_section['applicable'] : 'complete',
     '#options' => $applicable,
   );
+
   $form['http_auth']['activate'] = array(
     '#type' => 'checkbox',
     '#title' => t('Activate HTTP Authentication'),
     '#default_value' => isset($http_auth_section['activate']) ? $http_auth_section['activate'] : 0,
   );
+
   $form['http_auth']['note'] = array(
     '#markup' => "<div><strong>Note:</strong> Please clear the cache if the settings wouldn't work!</div>",
   );
+
   $form['submit'] = array(
     '#type'  => 'submit',
     '#value' => 'Save Settings',
@@ -108,7 +115,7 @@ function http_auth_settings_form($form, &$form_state) {
  * Submit handler().
  */
 function http_auth_settings_form_submit($form, &$form_state) {
-  $http_auth['username']  = $form_state['values']['username'];
+  $http_auth['username'] = $form_state['values']['username'];
   $http_auth['password'] = $form_state['values']['password'];
   $http_auth['message'] = $form_state['values']['message'];
   $http_auth['applicable'] = $form_state['values']['applicable'];
@@ -125,45 +132,46 @@ function http_auth_page_alter(&$page) {
   $http_auth = variable_get('http_auth');
 
   global $user;
-  if (is_array($user->roles) && in_array('administrator', $user->roles))
+  if (is_array($user->roles) && in_array('administrator', $user->roles)) {
     return;
+  }
 
-  if(isset($http_auth) && !empty($http_auth) && isset($http_auth['activate']) && $http_auth['activate'] == 1) {
-    if($http_auth['applicable'] == 'admin') {
-      if( strpos($_SERVER['REQUEST_URI'], '/admin') === false && strpos($_SERVER['REQUEST_URI'], '/user') === false && strpos($_SERVER['REQUEST_URI'], '/user/login') === false ){
+  if (isset($http_auth) && !empty($http_auth) && isset($http_auth['activate']) && $http_auth['activate'] == 1) {
+    if ($http_auth['applicable'] == 'admin') {
+      if (strpos($_SERVER['REQUEST_URI'], '/admin') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user/login') === FALSE) {
          return;
       }
     }
     $username = $_SERVER['PHP_AUTH_USER'];
     $password = $_SERVER['PHP_AUTH_PW'];
 
-    if(!($http_auth['username'] == $username && $http_auth['password'] == $password)) {
+    if (!($http_auth['username'] == $username && $http_auth['password'] == $password)) {
       $message = $http_auth['message'];
       header('WWW-Authenticate: Basic realm="'.$realm.'"');
       header('HTTP/1.0 401 Unauthorized');
-      if( empty($message)){
+      if (empty($message)) {
         $message = "This page is Restricted. Please contact the administrator for access.";
       }
-      die ( http_auth_cancel_page($message) );
+      die(http_auth_cancel_page($message));
     }
   }
 }
 
 /**
- * Returns the page to the unauthenticated user
+ * Returns the page to the unauthenticated user.
  */
-function http_auth_cancel_page($message = ''){
+function http_auth_cancel_page($message = '') {
   $sitename = variable_get('site_name');
-  if($sitename == '') {
+  if ($sitename == '') {
     $sitename = "Locked";
   }
   return '<html>
             <head>
               <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-              <title>'.$sitename.' | Restricted Site</title>
+              <title>' . $sitename . ' | Restricted Site</title>
             </head>
             <body class="http-restricted">
-              <p>'.$message.'</p>
+              <p>' . $message . '</p>
             </body>
           </html>';
 }
