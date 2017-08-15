@@ -9,7 +9,7 @@
  * Implements hook_menu().
  */
 function http_auth_menu() {
-  
+
   $items = array();
 
   $items['admin/config/development/http-auth'] = array(
@@ -139,7 +139,7 @@ function http_auth_page_alter(&$page) {
   if (isset($http_auth) && !empty($http_auth) && isset($http_auth['activate']) && $http_auth['activate'] == 1) {
     if ($http_auth['applicable'] == 'admin') {
       if (strpos($_SERVER['REQUEST_URI'], '/admin') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user/login') === FALSE) {
-         return;
+        return;
       }
     }
     $username = $_SERVER['PHP_AUTH_USER'];
@@ -147,7 +147,7 @@ function http_auth_page_alter(&$page) {
 
     if (!($http_auth['username'] == $username && $http_auth['password'] == $password)) {
       $message = $http_auth['message'];
-      header('WWW-Authenticate: Basic realm="'.$realm.'"');
+      header('WWW-Authenticate: Basic realm="' . $realm . '"');
       header('HTTP/1.0 401 Unauthorized');
       if (empty($message)) {
         $message = "This page is Restricted. Please contact the administrator for access.";
