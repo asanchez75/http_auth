@@ -32,7 +32,7 @@ class HttpAuthSettings extends ConfigFormBase {
     $http_auth_section = $this->config('http_auth.settings')->get();
     $applicable = [
       'complete' => $this->t('Complete Site'),
-      'admin'    => $this->t('Admin and User Pages')
+      'admin'    => $this->t('Admin and User Pages'),
     ];
 
     $form['http_auth'] = [
@@ -68,11 +68,11 @@ class HttpAuthSettings extends ConfigFormBase {
 
     $form['http_auth']['message'] = [
       '#type'          => 'textarea',
-      '#title'         => t('HTTP Auth Message'),
-      '#description'   => t('Add HTTP Auth message which would be shown to the unauthenticated users.'),
+      '#title'         => $this->t('HTTP Auth Message'),
+      '#description'   => $this->t('Add HTTP Auth message which would be shown to the unauthenticated users.'),
       '#default_value' => isset($http_auth_section['message']) ? $http_auth_section['message'] : '',
       '#attributes'    => [
-        'placeholder'  => t('This page is Restricted. Please contact the administrator for access.'),
+        'placeholder'  => $this->t('This page is Restricted. Please contact the administrator for access.'),
       ],
     ];
 
