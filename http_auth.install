@@ -9,5 +9,7 @@
  * Implements hook_uninstall().
  */
 function http_auth_uninstall() {
-  variable_del("http_auth");
+  \Drupal::service('config.factory')
+    ->getEditable('http_auth.settings')
+    ->delete();
 }
