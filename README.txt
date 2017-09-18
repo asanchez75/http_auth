@@ -13,7 +13,7 @@ Features
 INSTALLATION INSTRUCTIONS
 -------------------------
 1.  Copy the files included in the tarball into a directory named "http_auth"
-    in your Drupal sites/all/modules/ directory.
+    in your Drupal modules/ directory.
 2.  Login as site administrator.
 3.  Enable the HTTP Auth module on the Administer -> Modules page.
 4.  Make settings and activate the functionaity from the settings page.
