@@ -33,6 +33,7 @@ class HttpAuthSettings extends ConfigFormBase {
     $applicable = [
       'complete' => $this->t('Complete Site'),
       'admin'    => $this->t('Admin and User Pages'),
+      'paths'    => $this->t('Paths'),
     ];
 
     $form['http_auth'] = [
@@ -93,7 +94,17 @@ class HttpAuthSettings extends ConfigFormBase {
       '#markup' => "<div><strong>Note:</strong> Please clear the cache if the settings wouldn't work!</div>",
     ];
 
-    return parent::buildForm($form, $form_state);
+     $form['http_auth']['paths'] = [
+      '#type'          => 'textarea',
+      '#title'         => $this->t('Paths'),
+      '#description'   => $this->t('Paths to restrict access'),
+      '#default_value' => isset($http_auth_section['paths']) ? $http_auth_section['paths'] : '',
+      '#attributes'    => [
+        'placeholder'  => $this->t('This page is Restricted. Please contact the administrator for access.'),
+      ],
+    ];
+
+   return parent::buildForm($form, $form_state);
   }
 
   /**
@@ -111,6 +122,7 @@ class HttpAuthSettings extends ConfigFormBase {
       ->set('message', $values['message'])
       ->set('applicable', $values['applicable'])
       ->set('activate', $values['activate'])
+      ->set('paths', $values['paths'])
       ->save();
 
     drupal_set_message($this->t('Your Settings have been saved.'), 'status');

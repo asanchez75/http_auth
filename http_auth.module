@@ -9,7 +9,7 @@
  * Implements hook_page_top().
  */
 function http_auth_page_top(array &$page_top) {
-  $user_roles = \Drupal::currentUser()->getRoles();
+ $user_roles = \Drupal::currentUser()->getRoles();
   if (is_array($user_roles) && in_array("administrator", $user_roles)) {
     return;
   }
@@ -18,9 +18,16 @@ function http_auth_page_top(array &$page_top) {
   $http_auth = \Drupal::config('http_auth.settings')->get();
 
   if (isset($http_auth) && !empty($http_auth) && isset($http_auth['activate']) && $http_auth['activate'] == 1) {
+
     if ($http_auth['applicable'] == 'admin') {
       if (strpos($_SERVER['REQUEST_URI'], '/admin') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user') === FALSE && strpos($_SERVER['REQUEST_URI'], '/user/login') === FALSE) {
-        return;
+        return; //pass
+      }
+    }
+
+    if ($http_auth['applicable'] == 'paths') {
+      if (!in_array($_SERVER['REQUEST_URI'], array('/test8/node/1'))) {
+        return; //pass
       }
     }
 
