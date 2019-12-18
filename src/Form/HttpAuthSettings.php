@@ -84,6 +84,16 @@ class HttpAuthSettings extends ConfigFormBase {
       '#options'       => $applicable,
     ];
 
+     $form['http_auth']['paths'] = [
+      '#type'          => 'textarea',
+      '#title'         => $this->t('Paths'),
+      '#description'   => $this->t('Paths to restrict access'),
+      '#default_value' => isset($http_auth_section['paths']) ? $http_auth_section['paths'] : '',
+      '#attributes'    => [
+        'placeholder'  => $this->t('Enter paths line by line'),
+      ],
+    ];
+
     $form['http_auth']['activate'] = [
       '#type'          => 'checkbox',
       '#title'         => $this->t('Activate HTTP Authentication'),
@@ -94,15 +104,6 @@ class HttpAuthSettings extends ConfigFormBase {
       '#markup' => "<div><strong>Note:</strong> Please clear the cache if the settings wouldn't work!</div>",
     ];
 
-     $form['http_auth']['paths'] = [
-      '#type'          => 'textarea',
-      '#title'         => $this->t('Paths'),
-      '#description'   => $this->t('Paths to restrict access'),
-      '#default_value' => isset($http_auth_section['paths']) ? $http_auth_section['paths'] : '',
-      '#attributes'    => [
-        'placeholder'  => $this->t('This page is Restricted. Please contact the administrator for access.'),
-      ],
-    ];
 
    return parent::buildForm($form, $form_state);
   }

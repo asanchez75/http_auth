@@ -26,7 +26,8 @@ function http_auth_page_top(array &$page_top) {
     }
 
     if ($http_auth['applicable'] == 'paths') {
-      if (!in_array($_SERVER['REQUEST_URI'], array('/test8/node/1'))) {
+      $paths  = preg_split('/\r\n|[\r\n]/', $http_auth['paths']);
+      if (!in_array($_SERVER['REQUEST_URI'], $paths)) {
         return; //pass
       }
     }
