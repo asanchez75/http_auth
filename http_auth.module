@@ -27,7 +27,22 @@ function http_auth_page_top(array &$page_top) {
 
     if ($http_auth['applicable'] == 'paths') {
       $paths  = preg_split('/\r\n|[\r\n]/', $http_auth['paths']);
-      if (!in_array($_SERVER['REQUEST_URI'], $paths)) {
+      array_walk($paths, function(&$value, $key){
+         $value = str_replace('*', '', $value);
+      });
+      // count the number of times, the request_uri matches one of the given paths
+      $times = 0;
+      foreach ($paths as $path) {
+       if (!empty($path)) {
+        if (strpos($_SERVER['REQUEST_URI'], $path) === FALSE) {
+          $times = $times + 0;
+        }
+        else {
+          $times = $times + 1;
+        }
+       }
+      }
+      if ($times == 0) {
         return; //pass
       }
     }
